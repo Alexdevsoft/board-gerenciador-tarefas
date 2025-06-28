@@ -65,7 +65,9 @@ public class ColunaDAO {
 	}
 	
 	public int buscarProximaColuna(int colunaAtualId) {
-	    String sql = """ SELECT c2.id FROM coluna c1 JOIN coluna c2 ON c1.board_id = c2.board_id WHERE c1.id = ? AND c2.ordem = c1.ordem + 1 """;
+	    String sql = "SELECT c2.id FROM coluna c1" 
+	    		+ "JOIN coluna c2 ON c1.board_id = c2.board_id" 
+	    		+  "WHERE c1.id = ? AND c2.ordem = c1.ordem + 1";
 
 	    try (Connection conn = DBConnection.getConnection();
 	         PreparedStatement stmt = conn.prepareStatement(sql)) {

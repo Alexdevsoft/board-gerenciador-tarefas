@@ -6,8 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mysql.cj.xdevapi.Statement;
+import java.sql.Statement;
 
 import model.Board;
 import util.DBConnection;
@@ -41,15 +40,15 @@ public class BoardDAO {
         String sql = "SELECT * FROM board";
 
         try (Connection conn = DBConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            while (rs.next()) {
-                Board board = new Board();
-                board.setId(rs.getInt("id"));
-                board.setNome(rs.getString("nome"));
-                boards.add(board);
-            }
+        	     PreparedStatement stmt = conn.prepareStatement(sql);
+        	     ResultSet rs = stmt.executeQuery()) {
+        	    
+        	    while (rs.next()) {
+        	        Board board = new Board();
+        	        board.setId(rs.getInt("id"));
+        	        board.setNome(rs.getString("nome"));
+        	        boards.add(board);
+        	    }
 
         } catch (SQLException e) {
             System.out.println("Erro ao listar boards: " + e.getMessage());

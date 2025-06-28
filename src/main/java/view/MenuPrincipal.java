@@ -57,6 +57,8 @@ public class MenuPrincipal {
                     scanner.nextLine();
                     System.out.println("Você selecionou o board ID: " + idSelecionado);
                     // Aqui você pode chamar o Menu de manipulação de board depois
+                    MenuBoard menuBoard = new MenuBoard(idSelecionado);
+                    menuBoard.exibirMenu();
                     break;
                 case 3:
                     System.out.print("Digite o ID do board que deseja excluir: ");
@@ -74,8 +76,6 @@ public class MenuPrincipal {
         
         scanner.close();
         
-        MenuBoard menuBoard = new MenuBoard(idSelecionado);
-        menuBoard.exibirMenu();
     }
     
     

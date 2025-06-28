@@ -4,10 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.protobuf.Timestamp;
+import java.sql.Timestamp;
 
 import model.Card;
 import util.DBConnection;
@@ -22,7 +22,8 @@ public class CardDAO {
 
             stmt.setString(1, card.getTitulo());
             stmt.setString(2, card.getDescricao());
-            stmt.setTimestamp(3, Timestamp.valueOf(card.getDataCriacao()));
+            LocalDateTime dataCriacao = card.getDataCriacao();
+            stmt.setTimestamp(3, dataCriacao != null ? Timestamp.valueOf(dataCriacao) : null);
             stmt.setBoolean(4, card.isBloqueado());
             stmt.setString(5, card.getMotivoBloqueio());
             stmt.setInt(6, card.getColunaId());
