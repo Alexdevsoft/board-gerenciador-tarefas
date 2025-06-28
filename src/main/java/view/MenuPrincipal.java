@@ -1,10 +1,17 @@
 package view;
 
+import java.util.List;
 import java.util.Scanner;
+
+import dao.BoardDAO;
+import dao.ColunaDAO;
+import model.Board;
 
 public class MenuPrincipal {
 
-	public void exibirMenu() {
+	private BoardDAO boardDAO = new BoardDAO();
+
+    public void exibirMenu() {
         Scanner scanner = new Scanner(System.in);
         int opcao;
 
@@ -19,14 +26,43 @@ public class MenuPrincipal {
             scanner.nextLine(); // limpar buffer
 
             switch (opcao) {
-                case 1:
-                    System.out.println("Função para criar board ainda será implementada...");
-                    break;
+            case 1:
+                System.out.print("Digite o nome do novo board: ");
+                String nome = scanner.nextLine();
+                int novoId = boardDAO.criarBoard(nome);
+
+                if (novoId != -1) {
+                    ColunaDAO colunaDAO = new ColunaDAO();
+                    colunaDAO.criarColunaPadrao(novoId);
+                    System.out.println("Board e colunas padrão criados com sucesso!");
+                } else {
+                    System.out.println("Erro ao criar board.");
+                }
+                break;
+
                 case 2:
-                    System.out.println("Função para selecionar board ainda será implementada...");
+                    List<Board> boards = boardDAO.listarBoards();
+                    if (boards.isEmpty()) {
+                        System.out.println("Nenhum board encontrado.");
+                        break;
+                    }
+
+                    System.out.println("Boards disponíveis:");
+                    for (Board b : boards) {
+                        System.out.println(b.getId() + " - " + b.getNome());
+                    }
+
+                    System.out.print("Digite o ID do board para manipular: ");
+                    int idSelecionado = scanner.nextInt();
+                    scanner.nextLine();
+                    System.out.println("Você selecionou o board ID: " + idSelecionado);
+                    // Aqui você pode chamar o Menu de manipulação de board depois
                     break;
                 case 3:
-                    System.out.println("Função para excluir board ainda será implementada...");
+                    System.out.print("Digite o ID do board que deseja excluir: ");
+                    int idExcluir = scanner.nextInt();
+                    scanner.nextLine();
+                    boardDAO.excluirBoard(idExcluir);
                     break;
                 case 4:
                     System.out.println("Saindo...");
@@ -35,7 +71,13 @@ public class MenuPrincipal {
                     System.out.println("Opção inválida!");
             }
         } while (opcao != 4);
-
+        
         scanner.close();
+        
+        MenuBoard menuBoard = new MenuBoard(idSelecionado);
+        menuBoard.exibirMenu();
     }
+    
+    
+
 }

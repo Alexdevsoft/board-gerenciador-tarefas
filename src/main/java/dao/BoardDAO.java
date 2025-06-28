@@ -14,20 +14,27 @@ import util.DBConnection;
 
 public class BoardDAO {
 	
-	public void criarBoard(String nome) {
-        String sql = "INSERT INTO board (nome) VALUES (?)";
+	public int criarBoard(String nome) {
+	    String sql = "INSERT INTO board (nome) VALUES (?)";
+	    int boardId = -1;
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DBConnection.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, nome);
-            stmt.executeUpdate();
-            System.out.println("Board criado com sucesso!");
+	        stmt.setString(1, nome);
+	        stmt.executeUpdate();
 
-        } catch (SQLException e) {
-            System.out.println("Erro ao criar board: " + e.getMessage());
-        }
-    }
+	        ResultSet rs = stmt.getGeneratedKeys();
+	        if (rs.next()) {
+	            boardId = rs.getInt(1);
+	        }
+
+	    } catch (SQLException e) {
+	        System.out.println("Erro ao criar board: " + e.getMessage());
+	    }
+
+	    return boardId;
+	}
 
     public List<Board> listarBoards() {
         List<Board> boards = new ArrayList<>();

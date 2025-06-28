@@ -10,8 +10,10 @@ public class Card {
     private LocalDateTime dataCriacao;
     private boolean bloqueado;
     private String motivoBloqueio;
+    private int colunaId;
     private List<HistoricoCard> historico;
-	public String getTitulo() {
+	
+    public String getTitulo() {
 		return titulo;
 	}
 	public void setTitulo(String titulo) {
@@ -50,6 +52,19 @@ public class Card {
 	public int getId() {
 		return id;
 	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getColunaId() {
+		return colunaId;
+	}
+	public void setColunaId(int colunaId) {
+		this.colunaId = colunaId;
+	}
+	
+	
+	
 
     
 }
